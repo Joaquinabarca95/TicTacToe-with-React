@@ -26,8 +26,9 @@ useEffect(() => {
 }, [board])
 
 useEffect(() => {
-    if (result !== ""){
+    if (result !== ""){      
         document.querySelector(".title").innerHTML = `Game over! ${result}`
+        document.querySelector(".title").style.color = "peachpuff";     
     } 
 }, [result])
 
@@ -72,12 +73,21 @@ const checkTie = () => {
     }
 };
 
-
+const resetGame = () => {
+    setBoard(["","","",
+    "","","",
+    "","",""]);
+    setPlayer("O")
+    setResult("")
+    document.querySelector(".title").innerHTML = `It's ${player} Turn!`
+    document.querySelector(".title").style.color = "white";
+}
 
 
 return (
     <div className="board">
         <h2 className="title">It's {player} Turn!</h2>
+        <button className="btn" onClick={resetGame}>Start over</button>
         <div className="row">
             <Square value={board[0]} selectSquare={() => {selectSquare(0)}}/>
             <Square value={board[1]} selectSquare={() => {selectSquare(1)}}/>

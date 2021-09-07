@@ -1,12 +1,12 @@
 import React from 'react';
 import Board from './Board';
-import SelectPlayer from './SelectPlayer';
+// import SelectPlayer from './SelectPlayer';
 
 const Game = () =>{
 
     return (
         <>
-        <SelectPlayer />
+        {/* <SelectPlayer /> */}
         <Board />
         </>
     )
