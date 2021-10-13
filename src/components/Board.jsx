@@ -1,9 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import Square from './Square';
-// import SelectPlayer from './SelectPlayer';
+
 
 
 const Board = () =>{
+
+    
+    const [play, setPlay] = useState(false)
+
+    const SelectPlayer = () => {
+
+     const start = () => {    
+         setPlay(true)
+     }
+    
+        return (
+            <div className="selectPlayer">
+             <h2>Pick your weapon</h2>      
+                <div className="chooseWeapon">
+                    <input type="text" name="Player1" placeholder="Player 1 username" />
+                    <input type="text" name="Player2" placeholder="Player 2 username" />
+                    <br />
+                    <button value="X" onClick={start}>X</button>
+                    <button value="O" onClick={start}>O</button>
+                </div>
+            </div>
+        )
+    }
+
 
 const [board, setBoard] = useState([
     "","","",
@@ -12,8 +36,8 @@ const [board, setBoard] = useState([
     ]);
 
 
-const [player, setPlayer] = useState("O");
-const [result, setResult] = useState("");
+const [player, setPlayer] = useState("X", "O");
+const [result, setResult] = useState(null);
 
 useEffect(() => {
     checkTie();
@@ -26,7 +50,7 @@ useEffect(() => {
 }, [board])
 
 useEffect(() => {
-    if (result !== ""){      
+    if (result !== null){      
         document.querySelector(".title").innerHTML = `Game over! ${result}`
         document.querySelector(".title").style.color = "peachpuff";     
     } 
@@ -43,20 +67,15 @@ const selectSquare = (squareIndex) =>{
 }
 
 const checkWinner = () =>{
-    if ( (board[0]===board[1] && board[1]===board[2] && board[0] !== "") || (board[0]===board[3] && board[3] === board[6] && board[0] !== "") || (board[0]===board[4] && board[4] === board[8] && board[0] !== "") ){
-         
+    if ( (board[0]===board[1] && board[1]===board[2] && board[0] !== "") || (board[0]===board[3] && board[3] === board[6] && board[0] !== "") || (board[0]===board[4] && board[4] === board[8] && board[0] !== "") ){ 
         setResult(`${player} is the winner!!`)
     } if (board[1] === board[4] && board[4] === board[7] && board[1] !== ""){
-        
         setResult(`${player} is the winner!!`)
     } if ( (board[2]===board[5] && board[5]===board[8] && board[2] !== "") || (board[2]===board[4] && board[4]===board[6] && board[2] !=="") ){
-        
         setResult(`${player} is the winner!!`)
     } if ( board[3]===board[4] && board[4]===board[5] && board[3] !== ""){
-        
         setResult(`${player} is the winner!!`)
     } if (board[6]===board[7] && board[7] && board[8] && board[6] !== ""){
-        
         setResult(`${player} is the winner!!`)
     } 
 }
@@ -74,19 +93,21 @@ const checkTie = () => {
 };
 
 const resetGame = () => {
+    document.querySelector(".title").style.color = "white";
     setBoard(["","","",
     "","","",
     "","",""]);
-    setPlayer("O")
-    setResult("")
-    document.querySelector(".title").innerHTML = `It's ${player} Turn!`
-    document.querySelector(".title").style.color = "white";
+    setPlayer(player)
+    document.querySelector(".title").innerHTML = title
+    setResult(null)
 }
 
+const title = `Its ${player} Turn!`
 
 return (
-    <div className="board">
-        <h2 className="title">It's {player} Turn!</h2>
+    <>
+    {play === false ? <SelectPlayer /> : (<div className="board">
+        <h2 className="title">{title}</h2>
         <button className="btn" onClick={resetGame}>Start over</button>
         <div className="row">
             <Square value={board[0]} selectSquare={() => {selectSquare(0)}}/>
@@ -103,9 +124,9 @@ return (
             <Square value={board[7]} selectSquare={() => {selectSquare(7)}}/>
             <Square value={board[8]} selectSquare={() => {selectSquare(8)}}/>
         </div>
-    </div>
+    </div>)}
+    </>
     )
-
 }
 
 export default Board;
